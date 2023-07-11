@@ -14,6 +14,7 @@
         "/home/dcasl-icryu/ros2_ws/install/zed_interfaces/include/**",
         "/home/dcasl-icryu/ros2_ws/install/motion_capture_tracking_interfaces/include/**",
         "/home/dcasl-icryu/ros2_ws/install/crazyflie_interfaces/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/my_yolo_wrapper_interfaces/include/**",
         "/opt/ros/humble/include/**",
         "/usr/include/**"
       ],

@@ -254,6 +254,7 @@ private:
   int mCamId = 0;
   int mCamSerialNumber = 0;
   std::string mSimAddr = "localhost";  // The local address of the machine running the simulator
+  std::string mF2IPAddr = "192.168.1.120";
   sl::MODEL mCamUserModel = sl::MODEL::ZED;  // Default camera model
   sl::MODEL mCamRealModel;                   // Camera model requested to SDK
   unsigned int mCamFwVersion;                // Camera FW version
@@ -598,6 +599,7 @@ private:
   bool mSimEnabled = false;  // Expecting simulation data?
   bool mDebugMode = false;  // Debug mode active?
   int mSimPort = 30000;
+  int mF2Port = 30000;
   bool mSvoMode = false;
   bool mSvoPause = false;
   bool mPosTrackingStarted = false;

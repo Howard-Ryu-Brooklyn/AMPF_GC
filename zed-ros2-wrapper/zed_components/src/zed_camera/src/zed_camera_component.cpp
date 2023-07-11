@@ -3002,6 +3002,7 @@ void ZedCamera::initPublishers()
   std::string confImgRoot = "confidence";
   std::string conf_map_topic_name = "confidence_map";
   std::string conf_map_topic = mTopicRoot + confImgRoot + "/" + conf_map_topic_name;
+  // conf_map_topic  pointcloud_topic  depth_topic  rgb_topic (left,right)
 
   // Set the positional tracking topic names
   mPoseTopic = mTopicRoot + "pose";
@@ -3292,9 +3293,10 @@ bool ZedCamera::startCamera()
     mInitParams.svo_real_time_mode = mSvoRealtime;
   } else {
     RCLCPP_INFO(get_logger(), "*** CAMERA OPENING ***");
-
+    mInitParams.input.setFromStream(mF2IPAddr.c_str(), mF2Port);
     mInitParams.camera_fps = mCamGrabFrameRate;
     mInitParams.camera_resolution = static_cast<sl::RESOLUTION>(mCamResol);
+    RCLCPP_INFO_STREAM(get_logger(), "IP: " << mF2IPAddr.c_str() << ", Port: " << mF2Port);
 
     if (mCamSerialNumber == 0) {
       mInitParams.input.setFromCameraID(mCamId);

@@ -140,4 +140,12 @@ alias cbsi='cd ~/ros2_ws && colcon build --symlink-install'
 alias zedex='cd /usr/local/zed/tools && ./ZED_Explorer'
 alias zedros='ros2 launch zed_wrapper zed2i.launch.py'
 alias zedrviz='ros2 launch zed_display_rviz2 display_zed2i.launch.py'
+alias zeddc='ros2 run cv_basics zed_depthcrop'
 
+# YOLOv8
+alias yoloros='ros2 run my_yolo_wrapper my_yolo'
+
+# crazyswarm2
+alias cfserver='ros2 launch crazyflie launch.py' # server + rviz
+alias cfvelmux='ros2 launch crazyflie_examples keyboard_velmux_launch.py' # server + vel_mux
+alias cfkey='ros2 run teleop_twist_keyboard telop_twist_keyboard'
