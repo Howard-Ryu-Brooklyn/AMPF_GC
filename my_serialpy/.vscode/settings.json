@@ -1,0 +1,36 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/dcasl-icryu/ros2_ws/install/zed_topic_benchmark_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/zed_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/build/my_yolo_wrapper",
+        "/home/dcasl-icryu/ros2_ws/install/my_yolo_wrapper/lib/python3.10/site-packages",
+        "/home/dcasl-icryu/ros2_ws/build/cv_basics",
+        "/home/dcasl-icryu/ros2_ws/install/cv_basics/lib/python3.10/site-packages",
+        "/home/dcasl-icryu/ros2_ws/install/my_yolo_wrapper_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/motion_capture_tracking_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_examples/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/build/crazyflie_py",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_py/lib/python3.10/site-packages",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/dcasl-icryu/ros2_ws/install/zed_topic_benchmark_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/zed_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/build/my_yolo_wrapper",
+        "/home/dcasl-icryu/ros2_ws/install/my_yolo_wrapper/lib/python3.10/site-packages",
+        "/home/dcasl-icryu/ros2_ws/build/cv_basics",
+        "/home/dcasl-icryu/ros2_ws/install/cv_basics/lib/python3.10/site-packages",
+        "/home/dcasl-icryu/ros2_ws/install/my_yolo_wrapper_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/motion_capture_tracking_interfaces/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_examples/local/lib/python3.10/dist-packages",
+        "/home/dcasl-icryu/ros2_ws/build/crazyflie_py",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_py/lib/python3.10/site-packages",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

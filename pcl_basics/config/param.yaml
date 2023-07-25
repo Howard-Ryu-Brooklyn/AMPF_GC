@@ -1,0 +1,4 @@
+/**:
+    ros__parameters:
+        polar_timer_period: 33 # [ms] 30Hz
+        point_cloud_timer_period: 10 # [ms] 10Hz

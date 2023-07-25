@@ -41,13 +41,16 @@ def parse_array_param(param):
 def launch_setup(context, *args, **kwargs):
     names = LaunchConfiguration("cam_names")
     models = LaunchConfiguration("cam_models")
-    serials = LaunchConfiguration("cam_serials")
+    ips = LaunchConfiguration("cam_ips")
+    ports = LaunchConfiguration("cam_ports")
+
     poses = LaunchConfiguration("cam_poses")
     disable_tf = LaunchConfiguration("disable_tf")
 
     names_arr = parse_array_param(names.perform(context))
     models_arr = parse_array_param(models.perform(context))
-    serials_arr = parse_array_param(serials.perform(context))
+    ips_arr = parse_array_param(ips.perform(context))
+    ports_arr = parse_array_param(ports.perform(context))
     poses_arr = parse_array_param(poses.perform(context))
     disable_tf_val = disable_tf.perform(context)
 
@@ -62,11 +65,20 @@ def launch_setup(context, *args, **kwargs):
             )
         ]
 
-    if num_cams != len(serials_arr):
+    if num_cams != len(ips_arr):
         return [
             LogInfo(
                 msg=TextSubstitution(
-                    text="The size of the `serials` param array must be equal to the size of `names`"
+                    text="The size of the `ips` param array must be equal to the size of `names`"
+                )
+            )
+        ]
+
+    if num_cams != len(ports_arr):
+        return [
+            LogInfo(
+                msg=TextSubstitution(
+                    text="The size of the `ports` param array must be equal to the size of `names`"
                 )
             )
         ]
@@ -85,7 +97,8 @@ def launch_setup(context, *args, **kwargs):
 
     for name in names_arr:
         model = models_arr[cam_idx]
-        serial = serials_arr[cam_idx]
+        ip = ips_arr[cam_idx]
+        port = ports_arr[cam_idx]
         pose = "["
 
         info = (
@@ -94,7 +107,9 @@ def launch_setup(context, *args, **kwargs):
             + "("
             + model
             + "/"
-            + serial
+            + ip
+            + "/"
+            + port
             + ") with pose "
         )
 
@@ -123,12 +138,13 @@ def launch_setup(context, *args, **kwargs):
             launch_description_source=PythonLaunchDescriptionSource(
                 [
                     get_package_share_directory("zed_wrapper"),
-                    "/launch/" + model + ".launch.py",
+                    "/launch/" + model + "_ip.launch.py",
                 ]
             ),
             launch_arguments={
                 "camera_name": name,
-                "serial_number": serial,
+                "cam_ip": ip,
+                "cam_port": port,
                 "cam_pose": pose,
                 "publish_tf": publish_tf,
                 "publish_map_tf": publish_tf,
@@ -155,8 +171,12 @@ def generate_launch_description():
                 description="An array containing the names of the cameras, e.g. [zed2i,zed2,zed2, zed2i]",
             ),
             DeclareLaunchArgument(
-                "cam_serials",
-                description="An array containing the serial numbers of the cameras, e.g. [3001234,2001234,2004321,3004321]",
+                "cam_ips",
+                description="An array containing the ip address of the cameras, e.g. [192.168.1.120, 192.168.1.110]",
+            ),
+            DeclareLaunchArgument(
+                "cam_ports",
+                description="An array containing the ip address of the cameras, e.g. [30000, 30002]",
             ),
             DeclareLaunchArgument(
                 "cam_poses",

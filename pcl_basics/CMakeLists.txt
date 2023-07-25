@@ -10,7 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(my_yolo_wrapper_interfaces REQUIRED)
+find_package(my_interfaces REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(PCL 1.12 REQUIRED)
 
@@ -18,26 +18,34 @@ include_directories(${PCL_INCLUDE_DIRS} include)
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable(pcl_test src/pcl_test.cpp)
+add_executable(leader_distangle src/leader_distangle.cpp)
 
-target_link_libraries( pcl_test
+target_link_libraries( leader_distangle
   ${Boost_SYSTEM_LIBRARY}
   ${PCL_LIBRARIES}
 )
 
-target_compile_features(pcl_test PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(leader_distangle PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
 ament_target_dependencies(
-  pcl_test
+  leader_distangle
   rclcpp
   std_msgs
   sensor_msgs
-  my_yolo_wrapper_interfaces
+  my_interfaces
   pcl_conversions
 )
 
-install(TARGETS pcl_test
+install(TARGETS leader_distangle
   DESTINATION lib/${PROJECT_NAME})
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME})
+
+install(DIRECTORY
+  config
+  DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

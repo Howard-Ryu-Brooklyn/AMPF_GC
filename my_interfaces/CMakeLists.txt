@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(my_yolo_wrapper_interfaces)
+project(my_interfaces)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -27,6 +27,8 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/BoundingBox.msg"
   "msg/PolarCoor.msg"
+  "msg/Uwb.msg"
+  "msg/DesiredFormation.msg"
   DEPENDENCIES std_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg
 )
 

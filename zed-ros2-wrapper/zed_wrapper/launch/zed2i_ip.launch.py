@@ -18,27 +18,41 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
     # Camera model (force value)
     camera_model = "zed2i"
+    ip = LaunchConfiguration("cam_ip")
+    port = LaunchConfiguration("cam_port")
 
     # ZED Wrapper node
     zed_wrapper_launch = IncludeLaunchDescription(
         launch_description_source=PythonLaunchDescriptionSource(
             [
                 get_package_share_directory("zed_wrapper"),
-                "/launch/include/zed_camera.launch.py",
+                "/launch/include/zed_camera_ip.launch.py",
             ]
         ),
-        launch_arguments={"camera_model": camera_model}.items(),
+        launch_arguments={
+            "camera_model": camera_model,
+            "cam_ip": ip,
+            "cam_port": port,
+        }.items(),
     )
 
-    # Define LaunchDescription variable
-    ld = LaunchDescription()
-
-    # Add nodes to LaunchDescription
-    ld.add_action(zed_wrapper_launch)
-
-    return ld
+    return LaunchDescription(
+        [
+            DeclareLaunchArgument(
+                "cam_ip",
+                description="An array containing the ip address of the cameras, e.g. [192.168.1.120,  ]",
+            ),
+            DeclareLaunchArgument(
+                "cam_port",
+                description="An array containing the ip address of the cameras, e.g. [192.168.1.120,  ]",
+            ),
+            zed_wrapper_launch,
+        ]
+    )

@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/dcasl-icryu/ros2_ws/install/zed_topic_benchmark_component/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/zed_topic_benchmark_interfaces/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/zed_rgb_convert/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/zed_components/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/rviz_plugin_zed_od/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/zed_interfaces/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/my_yolo_wrapper_interfaces/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/motion_capture_tracking_interfaces/include/**",
+        "/home/dcasl-icryu/ros2_ws/install/crazyflie_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/my_yolo_wrapper_interfaces/include/**",
+        "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/pcl_basics/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
