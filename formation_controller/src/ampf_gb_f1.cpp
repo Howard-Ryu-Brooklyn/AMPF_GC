@@ -21,13 +21,34 @@ public:
   AMPF_GB()
       : Node("AMPF_GB")
   {
-    declare_parameter("timer_period", 100); // [ms] 10hz
-    get_parameter("timer_period", timer_period_);
+    // get parameters of AMPF_GB
+    declare_parameters();
 
-    std::chrono::milliseconds timer_period_ms(timer_period_);
+    declare_publisher_and_timer();
+    declare_subscriber();
+  }
 
-    publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
+private:
+  void declare_parameters()
+  {
+    this->declare_parameter("timer_period", 100); // [ms] 10hz
+    rclcpp::Parameter param_timer_period = this->get_parameter("timer_period");
+    timer_period_ = param_timer_period.as_int();
 
+    RCLCPP_INFO(this->get_logger(), "*** AMPF_GB PARAMETERS ARE SHOWN AS BELOW ***");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "timer_period: " << timer_period_ << "[ms] *");
+  }
+
+  void declare_publisher_and_timer()
+  {
+    publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::SensorDataQoS());
+
+    timer_ = this->create_wall_timer(
+        std::chrono::milliseconds(timer_period_), std::bind(&AMPF_GB::timer_callback, this));
+  }
+
+  void declare_subscriber()
+  {
     auto options = rclcpp::SubscriptionOptions();
     options.topic_stats_options.state = rclcpp::TopicStatisticsState::Enable;
     options.topic_stats_options.publish_period = std::chrono::seconds(10);
@@ -39,27 +60,19 @@ public:
     options.topic_stats_options.publish_topic = "/df_topic_statistics";
     desired_position_sub_ = this->create_subscription<my_interfaces::msg::DesiredFormation>(
         "/desired_formation", rclcpp::SensorDataQoS(), std::bind(&AMPF_GB::desired_position_callback, this, _1), options);
-
-    timer_ = this->create_wall_timer(
-        timer_period_ms, std::bind(&AMPF_GB::timer_callback, this));
   }
 
-private:
   void timer_callback()
   {
     double e12, z12[2];
     z12[0] = pc.x;
     z12[1] = pc.y;
-    e12 = (pow(z12[0], 2) + pow(z12[1], 2)) - df.zs12_squared;
+    e12 = (pow(z12[0], 2) + pow(z12[1], 2)) - df.zs12_squared; // scalar error
 
-    double grad_input[2];
-    grad_input[0] = e12 * z12[0];
-    grad_input[1] = e12 * z12[1];
-
-    geometry_msgs::msg::Twist cmd_vel;
+    // control input for follower 1 is e12*z12
     // projection rule
-    cmd_vel.linear.x = grad_input[0];
-    cmd_vel.angular.z = grad_input[1];
+    cmd_vel.linear.x = e12 * z12[0];
+    cmd_vel.angular.z = e12 * z12[1];
     publisher_->publish(cmd_vel);
   }
 
@@ -82,6 +95,8 @@ private:
   rclcpp::Subscription<my_interfaces::msg::PolarCoor>::SharedPtr leader_position_sub_;
   rclcpp::Subscription<my_interfaces::msg::DesiredFormation>::SharedPtr desired_position_sub_;
   rclcpp::TimerBase::SharedPtr timer_;
+
+  geometry_msgs::msg::Twist cmd_vel;
 
   my_interfaces::msg::DesiredFormation df;
   my_interfaces::msg::PolarCoor pc;
