@@ -11,7 +11,7 @@ Installation Order
 <https://www.stereolabs.com/docs/installation/linux/>
 
 cuda will be automatically installed while zed sdk installed.   
-In order to check your zed sdk installed correctly, go through following step is strongly recommended   
+In order to check your zed sdk installed correctly, going through following step is strongly recommended   
 <https://www.stereolabs.com/docs/app-development/cpp/linux/>   
 
 2. ROS2 Humble    
