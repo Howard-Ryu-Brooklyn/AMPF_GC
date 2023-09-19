@@ -1,0 +1,104 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/robotis/protos/RobotisLds01.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/lights/protos/FloorLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/bitcraze/crazyflie/protos/Crazyflie.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/formation_simulation/worlds/TurtleBot3Burger.proto"
+
+WorldInfo {
+  info [
+    "Simple TurtleBot3 Burger simulation that can be controlled by a ROS."
+  ]
+  title "ROS2 simulation of the TurtleBot3 Burger robot"
+  basicTimeStep 20
+}
+Viewpoint {
+  orientation -0.57735 0.57735 0.57735 2.0944
+  position 0 0 10
+  follow "TurtleBot3Burger:LDS-01"
+}
+TexturedBackground {
+  texture "stadium"
+  skybox FALSE
+}
+Crazyflie {
+  translation -0.7417 1.6541 0
+  rotation 0 0 1 1.6160
+  name "Crazyflie"
+  controller "<extern>"
+  controllerArgs [
+    ""
+  ]
+  extensionSlot [
+    Solid {
+      name "imu_link"
+    }
+    GPS {
+      name "cf_gps"
+    }
+    InertialUnit {
+      name "cf_inertial_unit"
+    }
+  ]
+}
+TurtleBot3Burger {
+  translation 0.4263 0.2486 0
+  rotation 0 0 1 2.3825
+  name "TurtleBot3Burgerf1"
+  controller "<extern>"
+  controllerArgs [
+    ""
+  ]
+  extensionSlot [
+    Solid {
+      name "imu_link"
+    }
+    GPS {
+    }
+    InertialUnit {
+      name "inertial_unit"
+    }
+    RobotisLds01 {
+    }
+  ]
+}
+TurtleBot3Burger {
+  translation 2.0860 -1.0708 0
+  rotation 0 0 1 1.6344
+  name "TurtleBot3Burgerf2"
+  controller "<extern>"
+  controllerArgs [
+    ""
+  ]
+  extensionSlot [
+    Solid {
+      name "imu_link"
+    }
+    GPS {
+    }
+    InertialUnit {
+      name "inertial_unit"
+    }
+    RobotisLds01 {
+    }
+  ]
+}
+Floor {
+  translation 0 0 0
+  name "floor(1)"
+  size 10 10
+  tileSize 1 1
+  appearance Parquetry{
+    type "chequered"
+  }
+}
+FloorLight {
+  translation 0 0 0
+  name "floor light"
+  bulbColor 1 1 1
+  pointLightColor 1 1 1
+  pointLightIntensity 4
+}

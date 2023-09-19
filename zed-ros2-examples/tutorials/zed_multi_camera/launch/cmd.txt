@@ -1,1 +1,0 @@
-ros2 launch zed_multi_camera zed_multi_camera_ip.launch.py cam_names:='[f1, f2]' cam_models:='[zed2i, zed2i]' cam_ips:='[192.168.1.110, 192.168.1.120]' cam_ports:='[30000, 30002]' cam_poses:=[[0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.03,0.0,0.0,3.142]]

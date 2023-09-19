@@ -1,1 +1,0 @@
-ros2 run pcl_basics leader_distangle --ros-args --params-file /home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/pcl_basics/config/param.yaml -r /pcl:=/zed2i/zed_node/point_cloud/cloud_registered

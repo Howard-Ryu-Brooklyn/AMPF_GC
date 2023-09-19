@@ -1,0 +1,10 @@
+/**:
+  bounding_box:
+    ros__parameters:
+      img_show: True
+      timer_period: 0.05 #[ms] 25Hz
+      model_path: "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/runs/detect/train/weights/best.pt"
+  point_cloud_processing:
+    ros__parameters:
+      polar_timer_period: 15 # [ms] 30Hz
+      point_cloud_timer_period: 10 # [ms] 10Hz

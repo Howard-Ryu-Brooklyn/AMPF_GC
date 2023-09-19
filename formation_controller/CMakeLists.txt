@@ -5,50 +5,91 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+# ---------------------------------------------------------------------
 # find dependencies
+# ---------------------------------------------------------------------
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(my_interfaces REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+# ---------------------------------------------------------------------
 
-add_executable(ampf_gb_f1 src/ampf_gb_f1.cpp)
-target_include_directories(ampf_gb_f1 PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_compile_features(ampf_gb_f1 PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-
-ament_target_dependencies(
-  ampf_gb_f1
-  rclcpp
-  geometry_msgs
-  my_interfaces
-)
+# ---------------------------------------------------------------------
+# include folder
+# ---------------------------------------------------------------------
+install(DIRECTORY
+  config
+  DESTINATION share/${PROJECT_NAME})
 
 install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME})
+# ---------------------------------------------------------------------
 
-install(TARGETS ampf_gb_f1
-  DESTINATION lib/${PROJECT_NAME})
-
-add_executable(ampf_df src/ampf_df.cpp)
-target_include_directories(ampf_df PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_compile_features(ampf_df PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+# ---------------------------------------------------------------------
+# desired_formation
+# ---------------------------------------------------------------------
+add_executable(desired_formation src/desired_formation.cpp)
+target_include_directories(desired_formation PUBLIC
+$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+$<INSTALL_INTERFACE:include>)
+target_compile_features(desired_formation PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
 ament_target_dependencies(
-  ampf_df
+  desired_formation
+  rclcpp
+  geometry_msgs
+  my_interfaces
+)
+  
+install(TARGETS desired_formation
+DESTINATION lib/${PROJECT_NAME})
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# follower1_controller
+# ---------------------------------------------------------------------
+add_executable(follower1_controller src/follower1_controller.cpp)
+target_include_directories(follower1_controller PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(follower1_controller PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+ament_target_dependencies(
+  follower1_controller
   rclcpp
   geometry_msgs
   my_interfaces
 )
 
-install(TARGETS ampf_df
-  DESTINATION lib/${PROJECT_NAME})
+install(TARGETS follower1_controller
+DESTINATION lib/${PROJECT_NAME})
+# ---------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------
+# follower2_controller
+# ---------------------------------------------------------------------
+add_executable(follower2_controller src/follower2_controller.cpp)
+target_include_directories(follower2_controller PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(follower2_controller PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+ament_target_dependencies(
+  follower2_controller
+  rclcpp
+  geometry_msgs
+  my_interfaces
+  nav_msgs
+  tf2_geometry_msgs
+)
+
+install(TARGETS follower2_controller
+DESTINATION lib/${PROJECT_NAME})
+# ---------------------------------------------------------------------
 
 
 if(BUILD_TESTING)

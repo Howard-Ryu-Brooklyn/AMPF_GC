@@ -29,6 +29,9 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/PolarCoor.msg"
   "msg/Uwb.msg"
   "msg/DesiredFormation.msg"
+  "msg/Follower1Info.msg"
+  "msg/Follower2Info.msg"
+  "msg/Localization.msg"
   DEPENDENCIES std_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg
 )
 

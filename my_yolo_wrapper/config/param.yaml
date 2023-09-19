@@ -1,5 +1,0 @@
-/**:
-    ros__parameters:
-        img_show: True
-        timer_period: 0.04 #[ms] 25Hz
-        model_path: "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/yolov8/runs/detect/train/weights/best.pt"
