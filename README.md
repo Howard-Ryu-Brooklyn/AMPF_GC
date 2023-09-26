@@ -23,3 +23,8 @@ In order to check your zed sdk installed correctly, going through following step
 
 5. crazyswarm2    
 <https://github.com/IMRCLab/crazyswarm2>
+
+6. webot and webot-ros2
+sudo apt-get install ros-humble-webot-ros2*
+when you run the launch file, webot will be automatically installed.
+
