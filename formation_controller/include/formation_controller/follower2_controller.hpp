@@ -24,7 +24,14 @@ using std::placeholders::_1;
 #define V_SAT (double)(0.22)
 #define W_SAT (double)(2.84)
 #define SEARCH_W (double)(1.0)
-#define SUBMODE_TRESHOLD (double)(0.3)
+#define SUBMODE_TRESHOLD (double)(0.1)
+
+enum SUBMODE
+{
+    STOP,
+    FOLLOW_LEADER,
+    FOLLOW_FOLLOWER1
+};
 
 using namespace std;
 
@@ -87,8 +94,8 @@ private:
 
     // variable
     unsigned long long int i_;
-    int mode_;
-    int submode_;
+    int localization_mode_;
+    int follow_mode_;
     double tstart_;
     double ts_;
     double d_; //[m]

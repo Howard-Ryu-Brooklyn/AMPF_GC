@@ -6,7 +6,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/lights/protos/FloorLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/bitcraze/crazyflie/protos/Crazyflie.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
-EXTERNPROTO "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/formation_simulation/worlds/TurtleBot3Burger.proto"
+EXTERNPROTO "/home/humble/ros2_ws/src/AMPF_UbuntuPC/formation_simulation/worlds/TurtleBot3Burger.proto"
+
 
 WorldInfo {
   info [
@@ -25,8 +26,8 @@ TexturedBackground {
   skybox FALSE
 }
 Crazyflie {
-  translation -0.7417 1.6541 0
-  rotation 0 0 1 1.6160
+  translation -0.8483 -0.8921 0
+  rotation 0 0 1 0.4324
   name "Crazyflie"
   controller "<extern>"
   controllerArgs [
@@ -45,8 +46,8 @@ Crazyflie {
   ]
 }
 TurtleBot3Burger {
-  translation 0.4263 0.2486 0
-  rotation 0 0 1 2.3825
+  translation 0.0616 0.5583 0
+  rotation 0 0 1 -0.1923
   name "TurtleBot3Burgerf1"
   controller "<extern>"
   controllerArgs [
@@ -66,8 +67,8 @@ TurtleBot3Burger {
   ]
 }
 TurtleBot3Burger {
-  translation 2.0860 -1.0708 0
-  rotation 0 0 1 1.6344
+  translation 1.5680 -0.5402 0
+  rotation 0 0 1 -3.0668
   name "TurtleBot3Burgerf2"
   controller "<extern>"
   controllerArgs [
@@ -94,11 +95,4 @@ Floor {
   appearance Parquetry{
     type "chequered"
   }
-}
-FloorLight {
-  translation 0 0 0
-  name "floor light"
-  bulbColor 1 1 1
-  pointLightColor 1 1 1
-  pointLightIntensity 4
 }

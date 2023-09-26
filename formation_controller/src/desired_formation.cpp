@@ -29,9 +29,9 @@ DesiredFormation::~DesiredFormation()
 void DesiredFormation::declare_parameters()
 {
     // declare and initialize
-    this->declare_parameter("desired_p1", std::vector<double>{1.0, 1.0});
-    this->declare_parameter("desired_p2", std::vector<double>{2.0, 2.0});
-    this->declare_parameter("desired_p3", std::vector<double>{0.0, 3.0});
+    this->declare_parameter("desired_p1", std::vector<double>{0.2772, 0.2986});
+    this->declare_parameter("desired_p2", std::vector<double>{1.3982, 1.7818});
+    this->declare_parameter("desired_p3", std::vector<double>{1.9186, 1.0944});
     this->declare_parameter("timer_period", 100);
 
     // get param object

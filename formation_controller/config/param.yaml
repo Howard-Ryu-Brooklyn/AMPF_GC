@@ -1,9 +1,9 @@
 /**:
     desired_formation:
         ros__parameters:
-            desired_p1: [3.7563, 1.2755] # [m, m]
-            desired_p2: [2.5298, 3.4954]
-            desired_p3: [4.4545, 4.7965]
+            desired_p1: [0.2772, 0.2986] # [m, m]
+            desired_p2: [1.3982, 1.7818]
+            desired_p3: [1.9186, 1.0944]
             timer_period: 200 # [ms]
 /**:
     follower1_controller:
@@ -14,6 +14,6 @@
         ros__parameters:
             timer_period: 200 # [ms]
             pe_amp: 0.15556349186 
-            pe_freq: 0.1 #[hz]
+            pe_freq: 0.2 #[hz]
             tol_time: 5.0 #[sec]
-            localization_tolerance: 0.001
+            localization_tolerance: 0.003

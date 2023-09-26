@@ -3,5 +3,5 @@ float64 e13
 float64 e23
 float64[2] z13
 float64[2] z23
-int16 mode
-int16 submode
+int16 localization_mode
+int16 follow_mode

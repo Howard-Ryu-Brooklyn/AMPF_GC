@@ -1,6 +1,8 @@
 """webots_ros2 package setup file."""
 
 from setuptools import setup
+from glob import glob
+import os
 
 
 package_name = "formation_simulation"
@@ -8,11 +10,12 @@ data_files = []
 data_files.append(
     ("share/ament_index/resource_index/packages", ["resource/" + package_name])
 )
+# data_files.append(os.path.join("share", package_name, "launch"), glob("launch/*.launch.py"))
 data_files.append(("share/" + package_name + "/launch", ["launch/pltjug.launch.py"]))
-data_files.append(("share/" + package_name + "/launch", ["launch/robot_launch.py"]))
-data_files.append(("share/" + package_name + "/launch", ["launch/basic_robot_f1.py"]))
-data_files.append(("share/" + package_name + "/launch", ["launch/basic_robot_f2.py"]))
-data_files.append(("share/" + package_name + "/launch", ["launch/basic_robot_cf.py"]))
+data_files.append(("share/" + package_name + "/launch", ["launch/robot.launch.py"]))
+data_files.append(("share/" + package_name + "/launch", ["launch/basic_robot_f1.launch.py"]))
+data_files.append(("share/" + package_name + "/launch", ["launch/basic_robot_f2.launch.py"]))
+data_files.append(("share/" + package_name + "/launch", ["launch/basic_robot_cf.launch.py"]))
 data_files.append(("share/" + package_name + "/launch", ["launch/test.py"]))
 data_files.append(
     (
@@ -32,6 +35,7 @@ data_files.append(
     (
         "share/" + package_name + "/worlds",
         [
+            # "TurtleBot3Burger.proto",
             "worlds/turtlebot3_burger_example.wbt",
             "worlds/.turtlebot3_burger_example.wbproj",
         ],

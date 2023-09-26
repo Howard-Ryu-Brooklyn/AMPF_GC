@@ -19,8 +19,8 @@ FOLLOWER2_CONTROLLER::FOLLOWER2_CONTROLLER()
     declare_subscriber();
 
     tstart_ = this->get_clock()->now().seconds();
-    mode_ = 1;
-    submode_ = 1;
+    localization_mode_ = 1;
+    follow_mode_ = 2;
     i_ = 0;
     d_ = 0.15; //[m]
     mode1V_ = 0;
@@ -147,12 +147,12 @@ void FOLLOWER2_CONTROLLER::timer_callback()
 {
     i_++;
 
-    if (mode_ == 1) // localization
+    if (localization_mode_ == 1) // localization
     {
         localize();
 
         if (localization_stop_condition())
-            mode_ = 0;
+            localization_mode_ = 0;
 
         localization_pub();
 
@@ -173,14 +173,14 @@ void FOLLOWER2_CONTROLLER::timer_callback()
     cmd_vel_pub_->publish(cmd_vel_);
 
     f2i_.header.stamp = this->now();
-    f2i_.mode = mode_;
-    f2i_.submode = submode_;
+    f2i_.localization_mode = localization_mode_;
+    f2i_.follow_mode = follow_mode_;
     follower2info_pub_->publish(f2i_);
 }
 
 void FOLLOWER2_CONTROLLER::gradient_controller()
 {
-    if (leader_lost_.data == 1 && submode_ == 1)
+    if (leader_lost_.data == 1 && follow_mode_ == FOLLOW_LEADER)
     {
         // search mode
         cmd_vel_.linear.x = 0;
@@ -209,19 +209,20 @@ void FOLLOWER2_CONTROLLER::gradient_controller()
 
         mode2V_ = f2i_.e23 * r * cos(theta);
         mode2W_ = f2i_.e23 * r * sin(theta);
-        if (submode_ == 1)
+
+        if (follow_mode_ == FOLLOW_LEADER)
         {
             // follow leader
             cmd_vel_.linear.x = mode1V_;
             cmd_vel_.angular.z = mode1W_;
         }
-        else if (submode_ == 2)
+        else if (follow_mode_ == FOLLOW_FOLLOWER1)
         {
             // follow follower2
             cmd_vel_.linear.x = mode2V_;
             cmd_vel_.angular.z = mode2W_;
         }
-        else if (submode_ == 3)
+        else if (follow_mode_ == STOP)
         {
             //  Stop
             cmd_vel_.linear.x = 0;
@@ -229,17 +230,21 @@ void FOLLOWER2_CONTROLLER::gradient_controller()
         }
     }
 
+    int is_Total_Converged = sqrt(mode1V_ * mode1V_ + mode1W_ * mode1W_) < SUBMODE_TRESHOLD && sqrt(mode2V_ * mode2V_ + mode2W_ * mode2W_) < SUBMODE_TRESHOLD;
+    int is_Mode_Converged = sqrt(cmd_vel_.linear.x * cmd_vel_.linear.x + cmd_vel_.angular.z * cmd_vel_.angular.z) < SUBMODE_TRESHOLD && follow_mode_ != STOP;
+
     // Submode stop condition
-    if (sqrt(mode1V_ * mode1V_ + mode1W_ * mode1W_) < SUBMODE_TRESHOLD && sqrt(mode2V_ * mode2V_ + mode2W_ * mode2W_) < SUBMODE_TRESHOLD)
+    if (is_Total_Converged)
     {
-        submode_ = 3;
+        follow_mode_ = STOP;
     }
     // Change submode
-    else if (sqrt(cmd_vel_.linear.x * cmd_vel_.linear.x + cmd_vel_.angular.z * cmd_vel_.angular.z) < SUBMODE_TRESHOLD && submode_ != 3)
+    else if (is_Mode_Converged)
     {
-        submode_ = (submode_ + 1) % 3;
-        if (submode_ == 0)
-            submode_++;
+        if (follow_mode_ == FOLLOW_LEADER)
+            follow_mode_ = FOLLOW_FOLLOWER1;
+        else if (follow_mode_ == FOLLOW_FOLLOWER1)
+            follow_mode_ = FOLLOW_LEADER;
     }
 }
 

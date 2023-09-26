@@ -17,19 +17,19 @@ class SimPublisher(Node):
             Uwb, "/my_uwb", qos_profile_sensor_data
         )
         self.f1lp_publisher = self.create_publisher(
-            PolarCoor, "/f1/leader_polar", qos_profile_sensor_data
+            PolarCoor, "/f1/polar_coordinate", qos_profile_sensor_data
         )
         self.f2lp_publisher = self.create_publisher(
-            PolarCoor, "/f2/leader_polar", qos_profile_sensor_data
+            PolarCoor, "/f2/polar_coordinate", qos_profile_sensor_data
         )
         self.fp_publisher = self.create_publisher(
             PolarCoor, "/follower_polar", qos_profile_sensor_data
         )
         self.f1_lost_leader_publisher = self.create_publisher(
-            Int16, "/f1_lost_leader", qos_profile_sensor_data
+            Int16, "/f1/lost_leader", qos_profile_sensor_data
         )
         self.f2_lost_leader_publisher = self.create_publisher(
-            Int16, "/f2_lost_leader", qos_profile_sensor_data
+            Int16, "/f2/lost_leader", qos_profile_sensor_data
         )
 
         self.timer = self.create_timer(0.02, self.timer_callback)
