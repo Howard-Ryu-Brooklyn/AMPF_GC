@@ -28,3 +28,5 @@ In order to check your zed sdk installed correctly, going through following step
 sudo apt-get install ros-humble-webot-ros2*
 when you run the launch file, webot will be automatically installed.
 
+7. ultralytics
+   pip install ultralytics
