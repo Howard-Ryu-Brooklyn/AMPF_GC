@@ -31,7 +31,13 @@ when you run the launch file, webot will be automatically installed.
 7. ultralytics
    pip install ultralytics
 
-실행순서
+위봇 시뮬레이션 실행순서
+- Terminal1
+  webot_sim
+- Terminal2
+  controller
+
+하드웨어 실행순서
 - Terminal1
    sshf1 -> bringup
 - Terminal2
