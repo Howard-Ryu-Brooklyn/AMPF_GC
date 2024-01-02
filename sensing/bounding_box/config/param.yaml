@@ -3,4 +3,5 @@
     ros__parameters:
       img_show: True
       timer_period: 0.04 #[ms] 25Hz
-      model_path: "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/runs/detect/train/weights/best.pt"
+      # model_path: "/home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/runs/detect/plus_epochs_100/weights/best.pt"
+      model_path: '/home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/runs/detect/epoch50/weights/best.pt'

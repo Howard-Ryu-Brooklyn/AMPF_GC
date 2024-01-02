@@ -38,7 +38,7 @@ class BoundingBoxPublisher(Node):
         self.declare_parameter("timer_period", 0.04)  # [sec] 25hz
         self.declare_parameter(
             "model_path",
-            "/home/dcasl-icryu/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/runs/detect/train/weights/best.pt",
+            "/home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/runs/detect/plus_epochs_100/weights/best.pt",
         )
 
         # Get param values

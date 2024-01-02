@@ -92,7 +92,6 @@ def generate_launch_description():
     sim_publisher_node = Node(
         package="formation_simulation",
         executable="sim_publisher",
-        # remappings=[("/follower1info", "/f1/follower1info"),],
         output="screen",
     )
 
@@ -107,8 +106,10 @@ def generate_launch_description():
     strnow = now.strftime("%Y_%m_%d-%H_%M_%S")
     data_path = "/home/humble/plotjuggler/data/rosbag2_"
     data_name = data_path + strnow
-
-    print(data_name)
+    
+    sim_topic_name = "/f1/odom /f2/odom /f1/polar_coordinate /f2/polar_coordinate /follower_polar /f1/lost_leader /f2/lost_leader /Crazyflie/gps /f1/TurtleBot3Burgerf1/gps /f2/TurtleBot3Burgerf2/gps /f1/TurtleBot3Burgerf1/compass/north_vector /f2/TurtleBot3Burgerf2/compass/north_vector "
+    controller_topic_name = "/desired_formation /f1/polar_coordinate /f1/lost_leader /f1/follower1info /f1/cmd_vel /f2/polar_coordinate /f2/lost_leader /f2/uwb /f2/odom /f2/follower2info /f2/cmd_vel /localization /f2/filtered_uwb /filtered_cmd_vel"
+    record_topic_name = sim_topic_name + controller_topic_name
 
     return LaunchDescription(
         [
@@ -130,20 +131,21 @@ def generate_launch_description():
             Turtlebot3_f1_launch,
             Turtlebot3_f2_launch,
             sim_publisher_node,
-            plotjuggler_node,
+            # plotjuggler_node,
             # ros bag
             # LogInfo(condition=LaunchConfigurationEquals("record", "true")),
-            launch.actions.ExecuteProcess(
-                cmd=["ros2", "bag", "record", "-a", "-o", data_name],
-                # cmd=["ros2", "bag", "record", "-a"],
-                output="screen",
-            ),
+            # launch.actions.ExecuteProcess(
+            #     # cmd=["ros2", "bag", "record", "-o", data_name, record_topic_name],
+            #     cmd=["ros2", "bag", "record", "-a" "-o", data_name],
+            #     shell=True,
+            #     output="screen",
+            # ),
             # This action will kill all nodes once the Webots simulation has exited
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=webots,
-                    on_exit=[launch.actions.EmitEvent(event=launch.events.Shutdown())],
-                )
-            ),
+            # RegisterEventHandler(
+            #     event_handler=OnProcessExit(
+            #         target_action=webots,
+            #         on_exit=[launch.actions.EmitEvent(event=launch.events.Shutdown())],
+            #     )
+            # ),
         ]
     )

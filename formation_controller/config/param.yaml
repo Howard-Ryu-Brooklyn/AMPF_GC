@@ -1,19 +1,41 @@
 /**:
     desired_formation:
         ros__parameters:
-            desired_p1: [0.2772, 0.2986] # [m, m]
-            desired_p2: [1.3982, 1.7818]
-            desired_p3: [1.9186, 1.0944]
+            # # CASE 1
+            desired_p1: [1.6110, 1.1534] # [m, m]
+            desired_p2: [0.3658, 0.4799]
+            desired_p3: [1.7730, 0.0573]
+            # CASE 2
+            # desired_p1: [0.2772, 0.2986] # [m, m]
+            # desired_p2: [1.3982, 1.7818]
+            # desired_p3: [1.9186, 1.0944]
+            # # CASE 3
+            # desired_p1: [0.1623, 1.8588] # [m, m]              
+            # desired_p2: [1.5514, 0.9736]
+            # desired_p3: [0.8717, 0.8936]
+
             timer_period: 200 # [ms]
 /**:
     follower1_controller:
         ros__parameters:
-            timer_period: 200 # [ms]
+            sim: false
+            timer_period: 20 # [ms] 50hz 2 times faster than measurement node
+            v_sat: 0.05
+            w_sat: 0.35
+            search_w: 0.2
+            mode_threshold: 0.001
+            spf_alpha: 0.005
 /**:
     follower2_controller:
         ros__parameters:
-            timer_period: 200 # [ms]
+            sim: false
+            timer_period: 20 # [ms]
             pe_amp: 0.15556349186 
             pe_freq: 0.2 #[hz]
-            tol_time: 5.0 #[sec]
-            localization_tolerance: 0.003
+            tol_time: 180.0 #[sec]
+            v_sat: 0.05
+            w_sat: 0.35
+            search_w: 0.2
+            mode_threshold: 0.05
+            center_threshold: 0.1
+            spf_alpha: 0.005

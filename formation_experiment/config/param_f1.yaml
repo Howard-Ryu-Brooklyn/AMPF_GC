@@ -1,0 +1,7 @@
+/**:
+  zed_yolo_publisher:
+    ros__parameters:
+      timer_period: 0.04 #[sec] 25Hz
+      ip_address: "192.168.1.110" 
+      resolution: "HD1080"
+      model_path: "/home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/runs/detect/red_epoch1000/weights/best.pt"

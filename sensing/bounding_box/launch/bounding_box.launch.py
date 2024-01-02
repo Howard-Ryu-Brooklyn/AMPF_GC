@@ -22,7 +22,7 @@ config_path = os.path.join(
 
 
 def generate_launch_description():
-    namespace = "/f1"
+    namespace = "/zed2i"
 
     image_remap = namespace + "/zed_node/rgb/image_rect_color"
     boundingbox_remap = namespace + "/boundingbox"

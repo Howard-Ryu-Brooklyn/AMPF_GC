@@ -1,0 +1,36 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from my_interfaces/msg/Follower2Info.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+
+module my_interfaces {
+  module msg {
+    typedef double double__2[2];
+    struct Follower2Info {
+      std_msgs::msg::Header header;
+
+      double e13;
+
+      double e23;
+
+      double__2 z13;
+
+      double__2 z23;
+
+      int16 localization_mode;
+
+      int16 follow_mode;
+
+      double follow_leader_mag;
+
+      double follow_follower2_mag;
+
+      double mode_threshold;
+
+      boolean is_leader_center;
+
+      boolean is_follower1_center;
+    };
+  };
+};

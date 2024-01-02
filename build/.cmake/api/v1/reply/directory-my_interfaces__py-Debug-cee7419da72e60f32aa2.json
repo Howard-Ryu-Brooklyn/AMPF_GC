@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "my_interfaces__py",
+		"source" : "/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/my_interfaces__py"
+	}
+}

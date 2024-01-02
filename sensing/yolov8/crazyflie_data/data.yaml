@@ -1,0 +1,15 @@
+path: /home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/yolov8/crazyflie_data
+
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['crazyflie']
+
+roboflow:
+  workspace: gist-izwd4
+  project: crazyflie-blue-door
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/gist-izwd4/crazyflie-blue-door/dataset/2

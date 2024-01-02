@@ -14,7 +14,7 @@ class SimPublisher(Node):
     def __init__(self):
         super().__init__("sim_publisher")
         self.uwb_publisher = self.create_publisher(
-            Uwb, "/my_uwb", qos_profile_sensor_data
+            Uwb, "/f2/uwb", qos_profile_sensor_data
         )
         self.f1lp_publisher = self.create_publisher(
             PolarCoor, "/f1/polar_coordinate", qos_profile_sensor_data
@@ -32,7 +32,7 @@ class SimPublisher(Node):
             Int16, "/f2/lost_leader", qos_profile_sensor_data
         )
 
-        self.timer = self.create_timer(0.02, self.timer_callback)
+        self.timer = self.create_timer(0.02, self.timer_callback) # 25hz same with zed_yolo_publisher
 
         self.cf_gps_subscriber = self.create_subscription(
             PointStamped, "/Crazyflie/gps", self.cf_gps_callback, 10
@@ -156,7 +156,7 @@ class SimPublisher(Node):
         self.uwb_msg.range = (
             ((self.f1_gps_msg.point.x - self.f2_gps_msg.point.x) ** 2)
             + ((self.f1_gps_msg.point.y - self.f2_gps_msg.point.y) ** 2)
-        ) ** 0.5
+        ) ** 0.5 *1000 #[mm]
 
         # f1 lost leader
         if self.f1lp_msg.theta > self.FOV:

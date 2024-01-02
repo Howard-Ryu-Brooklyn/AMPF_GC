@@ -1,0 +1,36 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/humble/ros2_ws/install/zed_components/include/**",
+        "/home/humble/ros2_ws/install/zed_interfaces/include/**",
+        "/home/humble/ros2_ws/install/ros2_aruco_interfaces/include/**",
+        "/home/humble/ros2_ws/install/ov_msckf/include/**",
+        "/home/humble/ros2_ws/install/ov_init/include/**",
+        "/home/humble/ros2_ws/install/ov_eval/include/**",
+        "/home/humble/ros2_ws/install/ov_core/include/**",
+        "/home/humble/ros2_ws/install/my_interfaces/include/**",
+        "/home/humble/ros2_ws/install/motion_capture_tracking_interfaces/include/**",
+        "/home/humble/ros2_ws/install/crazyflie_ros2_interfaces/include/**",
+        "/home/humble/ros2_ws/install/crazyflie_interfaces/include/**",
+        "/home/humble/ros2_ws/install/camera_models/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/humble/ros2_ws/src/AMPF_UbuntuPC/formation_controller/include/**",
+        "/home/humble/ros2_ws/src/AMPF_UbuntuPC/formation_experiment/include/**",
+        "/home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/point_cloud_processing/include/**",
+        "/home/humble/ros2_ws/src/VINS-Fusion-ROS2/camera_models/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

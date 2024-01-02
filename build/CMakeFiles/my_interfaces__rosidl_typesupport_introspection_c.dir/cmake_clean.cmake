@@ -1,0 +1,37 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/bounding_box__type_support.c.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/bounding_box__type_support.c.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/desired_formation__type_support.c.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/desired_formation__type_support.c.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower1_info__type_support.c.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower1_info__type_support.c.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower2_info__type_support.c.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower2_info__type_support.c.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/localization__type_support.c.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/localization__type_support.c.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/polar_coor__type_support.c.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/polar_coor__type_support.c.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/uwb__type_support.c.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/my_interfaces/msg/detail/uwb__type_support.c.o.d"
+  "libmy_interfaces__rosidl_typesupport_introspection_c.pdb"
+  "libmy_interfaces__rosidl_typesupport_introspection_c.so"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/bounding_box__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/bounding_box__type_support.c"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/desired_formation__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/desired_formation__type_support.c"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower1_info__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower1_info__type_support.c"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower2_info__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/follower2_info__type_support.c"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/localization__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/localization__type_support.c"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/polar_coor__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/polar_coor__type_support.c"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/uwb__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/my_interfaces/msg/detail/uwb__type_support.c"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C)
+  include(CMakeFiles/my_interfaces__rosidl_typesupport_introspection_c.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

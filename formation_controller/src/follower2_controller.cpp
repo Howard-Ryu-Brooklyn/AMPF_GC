@@ -19,14 +19,19 @@ FOLLOWER2_CONTROLLER::FOLLOWER2_CONTROLLER()
     declare_subscriber();
 
     tstart_ = this->get_clock()->now().seconds();
-    localization_mode_ = 1;
-    follow_mode_ = 2;
+    localization_mode_ = 1;          // localize at the begining: 1
+    follow_mode_ = FOLLOW_FOLLOWER1; // follow follower2 first: 2
     i_ = 0;
     d_ = 0.15; //[m]
     mode1V_ = 0;
     mode1W_ = 0;
     mode2V_ = 0;
     mode2W_ = 0;
+    uwb_pre_ = 0;
+    follow_leader_mag_ = 0;
+    follow_follower2_mag_ = 0;
+    is_leader_center_ = false;
+    is_follower1_center_ = false;
 
     L = {
         0.0,
@@ -45,11 +50,9 @@ FOLLOWER2_CONTROLLER::FOLLOWER2_CONTROLLER()
         pe_amp_,  // pe_amp
         pe_freq_, // pe_freq
         0,
-        0,
         0.0,
         0.0,
-        tol_time_,              // TOL_TIME
-        localization_tolerance_ // LOCALIZATION_TOLERANCE
+        tol_time_, // TOL_TIME
     };
 
     RCLCPP_INFO(this->get_logger(), "Follower2 controller node has been initialised");
@@ -67,14 +70,26 @@ void FOLLOWER2_CONTROLLER::declare_parameters()
     this->declare_parameter("pe_amp", 0.0);
     this->declare_parameter("pe_freq", 0.0);
     this->declare_parameter("tol_time", 0.0);
-    this->declare_parameter("localization_tolerance", 0.0);
+    this->declare_parameter("v_sat", 0.22);
+    this->declare_parameter("w_sat", 2.84);
+    this->declare_parameter("search_w", 0.5);
+    this->declare_parameter("mode_threshold", 0.1);
+    this->declare_parameter("sim", false);
+    this->declare_parameter("center_threshold", 0.1);
+    this->declare_parameter("spf_alpha", 0.1);
 
     // get param object
     rclcpp::Parameter param_timer_period = this->get_parameter("timer_period");
     rclcpp::Parameter param_pe_amp = this->get_parameter("pe_amp");
     rclcpp::Parameter param_pe_freq = this->get_parameter("pe_freq");
     rclcpp::Parameter param_tol_time = this->get_parameter("tol_time");
-    rclcpp::Parameter param_localization_tolerance = this->get_parameter("localization_tolerance");
+    rclcpp::Parameter param_v_sat = this->get_parameter("v_sat");
+    rclcpp::Parameter param_w_sat = this->get_parameter("w_sat");
+    rclcpp::Parameter param_search_w = this->get_parameter("search_w");
+    rclcpp::Parameter param_mode_threshold = this->get_parameter("mode_threshold");
+    rclcpp::Parameter param_center_threshold = this->get_parameter("center_threshold");
+    rclcpp::Parameter param_sim = this->get_parameter("sim");
+    rclcpp::Parameter param_spf_alpha = this->get_parameter("spf_alpha");
 
     // get type value
     timer_period_ = param_timer_period.as_int();
@@ -82,7 +97,13 @@ void FOLLOWER2_CONTROLLER::declare_parameters()
     pe_amp_ = param_pe_amp.as_double();
     pe_freq_ = param_pe_freq.as_double();
     tol_time_ = param_tol_time.as_double();
-    localization_tolerance_ = param_localization_tolerance.as_double();
+    v_sat_ = param_v_sat.as_double();
+    w_sat_ = param_w_sat.as_double();
+    search_w_ = param_search_w.as_double();
+    mode_threshold_ = param_mode_threshold.as_double();
+    center_threshold_ = param_center_threshold.as_double();
+    sim_ = param_sim.as_bool();
+    spf_alpha_ = param_spf_alpha.as_double();
 
     // print parameters
     RCLCPP_INFO(this->get_logger(), "*** FOLLOWER2_CONTROLLER PARAMETERS ARE SHOWN AS BELOW ***");
@@ -90,14 +111,22 @@ void FOLLOWER2_CONTROLLER::declare_parameters()
     RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "pe_amp_: " << pe_amp_ << " *");
     RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "pe_freq_: " << pe_freq_ << "[hz] *");
     RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "tol_time_: " << tol_time_ << "[sec] *");
-    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "localization_tolerance_: " << localization_tolerance_ << " *");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "v_sat_: " << v_sat_ << " *");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "w_sat_: " << w_sat_ << " *");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "search_w_: " << search_w_ << " *");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "mode_threshold_: " << mode_threshold_ << " *");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "center_threshold_: " << center_threshold_ << " *");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "sim_: " << sim_ << " *");
+    RCLCPP_INFO_STREAM(this->get_logger(), "*" << std::setw(20) << "spf_alpha_: " << spf_alpha_ << " *");
 }
 
 void FOLLOWER2_CONTROLLER::declare_publisher_and_timer()
 {
     cmd_vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 0);
+    nonfiltered_cmd_vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/nonfiltered_cmd_vel", 0);
     follower2info_pub_ = this->create_publisher<my_interfaces::msg::Follower2Info>("/follower2info", rclcpp::SensorDataQoS());
     localization_pub_ = this->create_publisher<my_interfaces::msg::Localization>("/localization", rclcpp::SensorDataQoS());
+    filtered_uwb_pub_ = this->create_publisher<my_interfaces::msg::Uwb>("/filtered_uwb", rclcpp::SensorDataQoS());
 
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(timer_period_), std::bind(&FOLLOWER2_CONTROLLER::timer_callback, this));
@@ -168,83 +197,125 @@ void FOLLOWER2_CONTROLLER::timer_callback()
     l_.header.stamp = this->now();
     localization_pub_->publish(l_);
 
-    cmd_vel_.linear.x = min(V_SAT, max(-V_SAT, cmd_vel_.linear.x));
-    cmd_vel_.angular.z = min(W_SAT, max(-W_SAT, cmd_vel_.angular.z));
-    cmd_vel_pub_->publish(cmd_vel_);
-
-    f2i_.header.stamp = this->now();
-    f2i_.localization_mode = localization_mode_;
-    f2i_.follow_mode = follow_mode_;
-    follower2info_pub_->publish(f2i_);
-}
-
-void FOLLOWER2_CONTROLLER::gradient_controller()
-{
-    if (leader_lost_.data == 1 && follow_mode_ == FOLLOW_LEADER)
+    if (localization_mode_ == 0) // formation mode
     {
-        // search mode
-        cmd_vel_.linear.x = 0;
-        if (lpc_.theta > 0)
-            cmd_vel_.angular.z = SEARCH_W;
-        else
-            cmd_vel_.angular.z = -SEARCH_W;
+        // // revert direction -> 터틀봇 모터 잘못달아서 팔로워1과 팔로워2의 방향이 다른듯;;
+        // if (!sim_)
+        //     cmd_vel_.linear.x = -1 * cmd_vel_.linear.x;
+
+        nonfiltered_cmd_vel_.linear.x = min(v_sat_, max(-v_sat_, cmd_vel_.linear.x));
+        nonfiltered_cmd_vel_.angular.z = min(w_sat_, max(-w_sat_, cmd_vel_.angular.z));
+
+        LowPassFilter spf_v(spf_alpha_, 0.0); // setpoint filter
+        LowPassFilter spf_w(spf_alpha_, 0.0); // setpoint filter
+
+        cmd_vel_.linear.x = spf_v.filter(nonfiltered_cmd_vel_.linear.x);
+        cmd_vel_.angular.z = spf_w.filter(nonfiltered_cmd_vel_.angular.z);
+
+        nonfiltered_cmd_vel_pub_->publish(nonfiltered_cmd_vel_);
+        cmd_vel_pub_->publish(cmd_vel_);
     }
     else
     {
-        // formation controller
-        f2i_.z13[0] = lpc_.r * cos(lpc_.theta);
-        f2i_.z13[1] = lpc_.r * sin(lpc_.theta);
-        f2i_.e13 = (pow(f2i_.z13[0], 2) + pow(f2i_.z13[1], 2)) - df_.zs13_squared; // scalar error
+        nonfiltered_cmd_vel_.linear.x = cmd_vel_.linear.x;
+        nonfiltered_cmd_vel_.angular.z = cmd_vel_.angular.z;
 
-        // update with estimated value
-        f2i_.z23[0] = L.x_hat[0] - f2_pos_[0];
-        f2i_.z23[1] = L.x_hat[1] - f2_pos_[1];
-        f2i_.e23 = (pow(f2i_.z23[0], 2) + pow(f2i_.z23[1], 2)) - df_.zs23_squared; // scalar error
-
-        double r = sqrt(f2i_.z23[0] * f2i_.z23[0] + f2i_.z23[1] * f2i_.z23[1]);
-        double theta = atan2(f2i_.z23[1], f2i_.z23[0]);
-
-        mode1V_ = f2i_.e13 * lpc_.r * cos(lpc_.theta);
-        mode1W_ = f2i_.e13 * lpc_.r * sin(lpc_.theta);
-
-        mode2V_ = f2i_.e23 * r * cos(theta);
-        mode2W_ = f2i_.e23 * r * sin(theta);
-
-        if (follow_mode_ == FOLLOW_LEADER)
-        {
-            // follow leader
-            cmd_vel_.linear.x = mode1V_;
-            cmd_vel_.angular.z = mode1W_;
-        }
-        else if (follow_mode_ == FOLLOW_FOLLOWER1)
-        {
-            // follow follower2
-            cmd_vel_.linear.x = mode2V_;
-            cmd_vel_.angular.z = mode2W_;
-        }
-        else if (follow_mode_ == STOP)
-        {
-            //  Stop
-            cmd_vel_.linear.x = 0;
-            cmd_vel_.angular.z = 0;
-        }
+        nonfiltered_cmd_vel_pub_->publish(nonfiltered_cmd_vel_);
+        cmd_vel_pub_->publish(nonfiltered_cmd_vel_);
     }
 
-    int is_Total_Converged = sqrt(mode1V_ * mode1V_ + mode1W_ * mode1W_) < SUBMODE_TRESHOLD && sqrt(mode2V_ * mode2V_ + mode2W_ * mode2W_) < SUBMODE_TRESHOLD;
-    int is_Mode_Converged = sqrt(cmd_vel_.linear.x * cmd_vel_.linear.x + cmd_vel_.angular.z * cmd_vel_.angular.z) < SUBMODE_TRESHOLD && follow_mode_ != STOP;
+    follow_leader_mag_ = sqrt(mode1V_ * mode1V_ + mode1W_ * mode1W_);
+    follow_follower2_mag_ = sqrt(mode2V_ * mode2V_ + mode2W_ * mode2W_);
 
-    // Submode stop condition
+    int is_Total_Converged = follow_leader_mag_ < mode_threshold_ && follow_follower2_mag_ < mode_threshold_;
+    int is_Mode_Converged = sqrt(cmd_vel_.linear.x * cmd_vel_.linear.x + cmd_vel_.angular.z * cmd_vel_.angular.z) < mode_threshold_ && follow_mode_ != STOP;
+
+    // Mode stop condition
     if (is_Total_Converged)
     {
         follow_mode_ = STOP;
+        RCLCPP_INFO_ONCE(this->get_logger(), "STOP MODE!!");
     }
-    // Change submode
+    // Change Mode
     else if (is_Mode_Converged)
     {
         if (follow_mode_ == FOLLOW_LEADER)
             follow_mode_ = FOLLOW_FOLLOWER1;
         else if (follow_mode_ == FOLLOW_FOLLOWER1)
             follow_mode_ = FOLLOW_LEADER;
+    }
+
+    f2i_.header.stamp = this->now();
+    f2i_.localization_mode = localization_mode_;
+    f2i_.follow_mode = follow_mode_;
+    f2i_.follow_leader_mag = follow_leader_mag_;
+    f2i_.follow_follower2_mag = follow_follower2_mag_;
+    f2i_.mode_threshold = mode_threshold_;
+    f2i_.is_leader_center = is_leader_center_;
+    f2i_.is_follower1_center = is_follower1_center_;
+
+    follower2info_pub_->publish(f2i_);
+}
+
+void FOLLOWER2_CONTROLLER::gradient_controller()
+{
+
+    // formation controller
+    f2i_.z13[0] = lpc_.r * cos(lpc_.theta);
+    f2i_.z13[1] = lpc_.r * sin(lpc_.theta);
+    f2i_.e13 = (pow(f2i_.z13[0], 2) + pow(f2i_.z13[1], 2)) - df_.zs13_squared; // scalar error
+
+    // update with estimated value
+    f2i_.z23[0] = L.x_hat[0] - f2_pos_[0];
+    f2i_.z23[1] = L.x_hat[1] - f2_pos_[1];
+    f2i_.e23 = (pow(f2i_.z23[0], 2) + pow(f2i_.z23[1], 2)) - df_.zs23_squared; // scalar error
+
+    mode1V_ = f2i_.e13 * f2i_.z13[0];
+    mode1W_ = f2i_.e13 * f2i_.z13[1];
+
+    mode2V_ = cos(f2_att_) * f2i_.e23 * f2i_.z23[0] + sin(f2_att_) * f2i_.e23 * f2i_.z23[1];
+    mode2W_ = -sin(f2_att_) * f2i_.e23 * f2i_.z23[0] + cos(f2_att_) * f2i_.e23 * f2i_.z23[1];
+
+    if (follow_mode_ == FOLLOW_LEADER)
+    {
+        if (leader_lost_.data == 1 || !is_leader_center_)
+        {
+            // search mode
+            cmd_vel_.linear.x = 0;
+
+            if (lpc_.theta > 0)
+                cmd_vel_.angular.z = search_w_;
+            else
+                cmd_vel_.angular.z = -search_w_;
+        }
+        else
+        {
+            // follow leader
+            cmd_vel_.linear.x = mode1V_;
+            cmd_vel_.angular.z = mode1W_;
+        }
+    }
+    else if (follow_mode_ == FOLLOW_FOLLOWER1)
+    {
+
+        is_follower1_center_ = sqrt(mode2W_ * mode2W_) < center_threshold_;
+        // follow follower2
+        if (is_follower1_center_)
+        {
+            cmd_vel_.linear.x = mode2V_;
+            cmd_vel_.angular.z = mode2W_;
+        }
+        else
+        {
+            cmd_vel_.linear.x = 0;
+            cmd_vel_.angular.z = mode2W_;
+        }
+    }
+    else if (follow_mode_ == STOP)
+    {
+        //  Stop
+        cmd_vel_.linear.x = 0;
+        cmd_vel_.angular.z = 0;
     }
 }
 
@@ -274,35 +345,18 @@ void FOLLOWER2_CONTROLLER::localize()
 
 bool FOLLOWER2_CONTROLLER::localization_stop_condition()
 {
-    if (norm(L.x_hat_dot) < L.LOCALIZATION_TOLERLANCE && norm(L.x_hat_dot) != 0)
+
+    if (L.timer_cnt == 0)
+        L.tol_ts = this->get_clock()->now().seconds() - tstart_;
+
+    if (L.timer_cnt * ts_ > L.TOL_TIME)
     {
-        // RCLCPP_INFO_STREAM(this->get_logger(), "norm(L.x_hat_dot): " << norm(L.x_hat_dot) << ", L.LOCALIZATION_TOLERLANCE: " << L.LOCALIZATION_TOLERLANCE);
-        if (L.tol_cnt == 0)
-        {
-            L.tol_ts = this->get_clock()->now().seconds() - tstart_;
-            // RCLCPP_INFO_STREAM(this->get_logger(), "L.tol_ts: " << L.tol_ts);
-        }
+        L.tol_tf = tstart_ - this->get_clock()->now().seconds();
 
-        if ((L.tol_cnt + 1) == L.timer_cnt)
-        {
-            L.tol_cnt++;
-        }
-        else
-        {
-            // RCLCPP_INFO_STREAM(this->get_logger(), "cnt reset!!");
-            L.tol_cnt = 0;
-            L.timer_cnt = 0;
-        }
-
-        if (L.tol_cnt * ts_ > L.TOL_TIME)
-        {
-            L.tol_tf = tstart_ - this->get_clock()->now().seconds();
-
-            RCLCPP_INFO_STREAM(this->get_logger(), "localization has completed during " << L.tol_ts << " ~ " << L.tol_tf);
-            RCLCPP_INFO_STREAM(this->get_logger(), "L.tol_cnt " << L.tol_cnt * ts_ << " ~ " << L.TOL_TIME);
-            return 1;
-        }
+        RCLCPP_INFO_STREAM(this->get_logger(), "localization has completed during " << L.tol_ts << " ~ " << L.tol_tf);
+        return 1;
     }
+
     return 0;
 }
 
@@ -328,20 +382,30 @@ void FOLLOWER2_CONTROLLER::localization_pub()
     l_.pe_amp = L.pe_amp;
     l_.pe_freq = L.pe_freq;
     l_.timer_cnt = L.timer_cnt;
-    l_.tol_cnt = L.tol_cnt;
     l_.tol_ts = L.tol_ts;
     l_.tol_tf = L.tol_tf;
     l_.tol_time = L.TOL_TIME;
-    l_.localization_threshold = L.LOCALIZATION_TOLERLANCE;
 }
 
 void FOLLOWER2_CONTROLLER::leader_position_callback(const my_interfaces::msg::PolarCoor::SharedPtr msg)
 {
+    MovingAverageFilter mv_filter_r(5);
+    MovingAverageFilter mv_filter_theta(5);
+
     lpc_.header.stamp = msg->header.stamp;
     lpc_.x = msg->x;
     lpc_.y = msg->y;
-    lpc_.r = msg->r;
-    lpc_.theta = msg->theta;
+    lpc_.r = mv_filter_r.getNextValue(msg->r);
+    lpc_.theta = mv_filter_theta.getNextValue(msg->theta);
+
+    if (lpc_.theta > 0)
+    {
+        is_leader_center_ = lpc_.theta < 5 * D2R;
+    }
+    else
+    {
+        is_leader_center_ = lpc_.theta > -5 * D2R;
+    }
 }
 
 void FOLLOWER2_CONTROLLER::desired_position_callback(const my_interfaces::msg::DesiredFormation::SharedPtr msg)
@@ -354,11 +418,19 @@ void FOLLOWER2_CONTROLLER::desired_position_callback(const my_interfaces::msg::D
 
 void FOLLOWER2_CONTROLLER::uwb_callback(const my_interfaces::msg::Uwb::SharedPtr msg)
 {
+    LowPassFilter lpf(0.005, 0.0);
+
     uwb_.header.stamp = msg->header.stamp;
     uwb_.time_stamp = msg->time_stamp;
-    uwb_.range = msg->range;
+    uwb_.range = lpf.filter(msg->range * 0.001); // [m]
+
+    // remove frequently obtained 0
+    if (uwb_.range == 0)
+        uwb_.range = uwb_pre_;
 
     L.D = uwb_.range;
+    uwb_pre_ = uwb_.range;
+    filtered_uwb_pub_->publish(uwb_);
 }
 
 void FOLLOWER2_CONTROLLER::odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)

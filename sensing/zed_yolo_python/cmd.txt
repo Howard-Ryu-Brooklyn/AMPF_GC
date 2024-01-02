@@ -1,0 +1,31 @@
+-------------------------------------------------------------------
+# record zed image over wifi
+-------------------------------------------------------------------
+cd /home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/zed_yolo_python
+
+python3 zed_recording_overwifi.py --output_svo_file /home/humble/Documents/ZED/simulation/ --ip_address 192.168.1.110 --resolution HD1080
+
+python3 zed_recording_overwifi.py --output_svo_file /home/humble/Documents/ZED/simulation/ --ip_address 192.168.1.120 --resolution HD1080
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+# export svo file to avi file
+-------------------------------------------------------------------
+cd /home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/zed_yolo_python
+
+python3 svo_export.py --mode 1 --input_svo_file /home/humble/Documents/ZED/simulation/20231024_23h_59m_29s.svo --output_avi_file /home/humble/Documents/ZED/simulation/20231024_23h_59m_29s.avi
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+# cut zed image in half and convert avi to mp4
+-------------------------------------------------------------------
+ffmpeg -i /home/humble/Documents/ZED/simulation/20231024_23h_46m_01s.avi -vf crop=1280:720:0:0 -c:a copy /home/humble/Documents/ZED/simulation/20231024_23h_46m_01s.mp4
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+# run zed_yolo input svo file
+-------------------------------------------------------------------
+cd /home/humble/ros2_ws/src/AMPF_UbuntuPC/sensing/zed_yolo_python
+
+python3 zed_yolo.py --input_svo_file /home/humble/Documents/ZED/simulation/20231024_23h_59m_29s.svo --resolution HD1080
+-------------------------------------------------------------------

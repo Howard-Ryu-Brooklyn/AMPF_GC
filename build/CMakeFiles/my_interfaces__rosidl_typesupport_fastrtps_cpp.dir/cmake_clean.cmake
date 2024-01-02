@@ -1,0 +1,37 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/desired_formation__type_support.cpp.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/desired_formation__type_support.cpp.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/follower1_info__type_support.cpp.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/follower1_info__type_support.cpp.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/follower2_info__type_support.cpp.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/follower2_info__type_support.cpp.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/localization__type_support.cpp.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/localization__type_support.cpp.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/polar_coor__type_support.cpp.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/polar_coor__type_support.cpp.o.d"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/uwb__type_support.cpp.o"
+  "CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/uwb__type_support.cpp.o.d"
+  "libmy_interfaces__rosidl_typesupport_fastrtps_cpp.pdb"
+  "libmy_interfaces__rosidl_typesupport_fastrtps_cpp.so"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/bounding_box__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/bounding_box__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/desired_formation__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/follower1_info__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/follower2_info__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/localization__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/polar_coor__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/dds_fastrtps/uwb__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/desired_formation__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/follower1_info__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/follower2_info__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/localization__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/polar_coor__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/my_interfaces/msg/detail/uwb__rosidl_typesupport_fastrtps_cpp.hpp"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/my_interfaces__rosidl_typesupport_fastrtps_cpp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
