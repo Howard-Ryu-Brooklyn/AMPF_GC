@@ -1,7 +1,0 @@
-std_msgs/Header header
-float64 e12
-float64[2] z12
-int16 follow_mode
-float64 mag_cmd
-float64 mode_threshold
-bool is_leader_center

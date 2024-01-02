@@ -1,7 +1,0 @@
-/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/rosidl_adapter/my_interfaces:msg/BoundingBox.idl
-/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/rosidl_adapter/my_interfaces:msg/PolarCoor.idl
-/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/rosidl_adapter/my_interfaces:msg/Uwb.idl
-/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/rosidl_adapter/my_interfaces:msg/DesiredFormation.idl
-/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/rosidl_adapter/my_interfaces:msg/Follower1Info.idl
-/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/rosidl_adapter/my_interfaces:msg/Follower2Info.idl
-/home/humble/ros2_ws/src/AMPF_UbuntuPC/build/rosidl_adapter/my_interfaces:msg/Localization.idl
