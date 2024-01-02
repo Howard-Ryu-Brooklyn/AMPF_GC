@@ -30,3 +30,14 @@ when you run the launch file, webot will be automatically installed.
 
 7. ultralytics
    pip install ultralytics
+
+실행순서
+- Terminal1
+   sshf1 -> bringup
+- Terminal2
+   sshf2 -> bringup
+- Terminal3
+   sensing
+- Terminal4
+  controller
+
