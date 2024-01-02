@@ -31,6 +31,10 @@ when you run the launch file, webot will be automatically installed.
 7. ultralytics
    pip install ultralytics
 
+우분투컴 
+ID: humble
+PW: 123123
+
 위봇 시뮬레이션 실행순서
 - Terminal1
   webot_sim
